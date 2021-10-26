@@ -32,7 +32,7 @@ option_list <- list(
   make_option(c("-s", "--identity"), action="store_true", default=TRUE,
               help="turn on color alignments by % identity [default %default]",
               dest="similarity"),
-  make_option(c("-t", "--identity-on-target"), action="store_true", default=FALSE,
+  make_option(c("-t", "--identity-on-target"), action="store_true", default=TRUE,
               help="turn on calculation of % identity for on-target alignments only [default %default]",
               dest="on_target"),
   make_option(c("-x", "--interactive-plot-off"), action="store_false", default=FALSE,
