@@ -14,10 +14,10 @@ option_list <- list(
               dest="output_filename"),
   make_option(c("-v", "--verbose"), action="store_true", default=TRUE,
               help="Print out all parameter settings [default]"),
-  make_option(c("-q", "--min-query-length"), type="numeric", default=400000,
+  make_option(c("-q", "--min-query-length"), type="numeric", default=500,
               help="filter queries with total alignments less than cutoff X bp [default %default]",
               dest="min_query_aln"),
-  make_option(c("-m", "--min-alignment-length"), type="numeric", default=10000,
+  make_option(c("-m", "--min-alignment-length"), type="numeric", default=100,
               help="filter alignments less than cutoff X bp [default %default]",
               dest="min_align"),
   make_option(c("-p","--plot-size"), type="numeric", default=15,
@@ -29,13 +29,13 @@ option_list <- list(
   make_option(c("-k", "--number-ref-chromosomes"), type="numeric", default=NULL,
               help="number of sorted reference chromosomes to keep [default all chromosmes]",
               dest="keep_ref"),
-  make_option(c("-s", "--identity"), action="store_true", default=FALSE,
+  make_option(c("-s", "--identity"), action="store_true", default=TRUE,
               help="turn on color alignments by % identity [default %default]",
               dest="similarity"),
-  make_option(c("-t", "--identity-on-target"), action="store_true", default=FALSE,
+  make_option(c("-t", "--identity-on-target"), action="store_true", default=TRUE,
               help="turn on calculation of % identity for on-target alignments only [default %default]",
               dest="on_target"),
-  make_option(c("-x", "--interactive-plot-off"), action="store_false", default=TRUE,
+  make_option(c("-x", "--interactive-plot-off"), action="store_false", default=FALSE,
               help="turn off production of interactive plotly [default %default]",
               dest="interactive"),
   make_option(c("-r", "--reference-ids"), type="character", default=NULL,
@@ -79,7 +79,7 @@ if(is.null(opt$refIDs)){
   if(is.null(opt$keep_ref)){
     opt$keep_ref = length(chromMax)
   }
-  refIDsToKeepOrdered = names(sort(chromMax, decreasing = T)[1:opt$keep_ref])
+  refIDsToKeepOrdered = names(chromMax)[order(nchar(names(chromMax)),names(chromMax))][1:opt$keep_ref]
   alignments = alignments[which(alignments$refID %in% refIDsToKeepOrdered),]
   
 } else {
@@ -93,6 +93,9 @@ alignments = alignments[which(alignments$queryID %in% names(queryLenAgg)[which(q
 
 # filter alignment by length
 alignments = alignments[which(alignments$lenAlnQuery > opt$min_align),]
+
+#filter alignments by percent identity, uncomment and change it to your desired percentID
+#alignments = alignments[which(alignments$percentID > 0.60),]
 
 # re-filter queries by alignment length, for now include overlapping intervals
 queryLenAgg = tapply(alignments$lenAlnQuery, alignments$queryID, sum)
@@ -206,7 +209,7 @@ if (opt$similarity) {
       )
     ) +
     scale_x_continuous(breaks = cumsum(as.numeric(chromMax)),
-                       labels = levels(alignments$refID)) +
+                       labels = levels(alignments$refID),expand = c(0,0)) +
     theme_bw() +
     theme(text = element_text(size = 8)) +
     theme(
@@ -215,7 +218,7 @@ if (opt$similarity) {
       panel.grid.minor.x = element_blank(),
       axis.text.y = element_text(size = 4, angle = 15)
     ) +
-    scale_y_continuous(breaks = yTickMarks, labels = substr(levels(alignments$queryID), start = 1, stop = 20)) +
+    scale_y_continuous(breaks = yTickMarks, labels = substr(levels(alignments$queryID), start = 1, stop = 20),expand = c(0,0)) +
     { if(opt$h_lines){ geom_hline(yintercept = yTickMarks,
                                   color = "grey60",
                                   size = .1) }} +
@@ -251,7 +254,7 @@ if (opt$similarity) {
       )
     )) +
     scale_x_continuous(breaks = cumsum(as.numeric(chromMax)),
-                       labels = levels(alignments$refID)) +
+                       labels = levels(alignments$refID),expand = c(0,0)) +
     theme_bw() +
     theme(text = element_text(size = 8)) +
     theme(
@@ -260,7 +263,7 @@ if (opt$similarity) {
       panel.grid.minor.x = element_blank(),
       axis.text.y = element_text(size = 4, angle = 15)
     ) +
-    scale_y_continuous(breaks = yTickMarks, labels = substr(levels(alignments$queryID), start = 1, stop = 20)) +
+    scale_y_continuous(breaks = yTickMarks, labels = substr(levels(alignments$queryID), start = 1, stop = 20),expand = c(0,0)) +
     { if(opt$h_lines){ geom_hline(yintercept = yTickMarks,
                                   color = "grey60",
                                   size = .1) }} +
