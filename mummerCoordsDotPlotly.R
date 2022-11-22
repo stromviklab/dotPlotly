@@ -216,7 +216,8 @@ if (opt$similarity) {
       panel.grid.major.y = element_blank(),
       panel.grid.minor.y = element_blank(),
       panel.grid.minor.x = element_blank(),
-      axis.text.y = element_text(size = 4, angle = 15)
+      axis.text.y = element_text(size = 2),
+      axis.text.x = element_text(size = 2, angle = 90)
     ) +
     scale_y_continuous(breaks = yTickMarks, labels = substr(levels(alignments$queryID), start = 1, stop = 20),expand = c(0,0)) +
     { if(opt$h_lines){ geom_hline(yintercept = yTickMarks,
@@ -261,7 +262,8 @@ if (opt$similarity) {
       panel.grid.major.y = element_blank(),
       panel.grid.minor.y = element_blank(),
       panel.grid.minor.x = element_blank(),
-      axis.text.y = element_text(size = 4, angle = 15)
+      axis.text.y = element_text(size = 2),
+      axis.text.x = element_text(size = 2, angle = 90)
     ) +
     scale_y_continuous(breaks = yTickMarks, labels = substr(levels(alignments$queryID), start = 1, stop = 20),expand = c(0,0)) +
     { if(opt$h_lines){ geom_hline(yintercept = yTickMarks,
@@ -278,6 +280,11 @@ if (opt$similarity) {
 }
 # gp
 ggsave(filename = paste0(opt$output_filename, ".png"), width = opt$plot_size, height = opt$plot_size, units = "in", dpi = 300, limitsize = F)
+
+## Save as PDF 
+pdf(file=paste0(opt$output_filename, ".pdf"), width = opt$plot_size, height = opt$plot_size)
+gp 
+dev.off()
 
 if(opt$interactive){
   pdf(NULL)
