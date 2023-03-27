@@ -95,7 +95,7 @@ alignments = alignments[which(alignments$queryID %in% names(queryLenAgg)[which(q
 alignments = alignments[which(alignments$lenAlnQuery > opt$min_align),]
 
 #filter alignments by percent identity, uncomment and change it to your desired percentID
-#alignments = alignments[which(alignments$percentID > 0.60),]
+alignments = alignments[which(alignments$percentID > 0.70),]
 
 # re-filter queries by alignment length, for now include overlapping intervals
 queryLenAgg = tapply(alignments$lenAlnQuery, alignments$queryID, sum)
@@ -216,22 +216,23 @@ if (opt$similarity) {
       panel.grid.major.y = element_blank(),
       panel.grid.minor.y = element_blank(),
       panel.grid.minor.x = element_blank(),
-      axis.text.y = element_text(size = 2),
-      axis.text.x = element_text(size = 2, angle = 90)
+      axis.text.y = element_text(size = 7),
+      axis.text.x = element_text(size = 7, angle = 90)
     ) +
     scale_y_continuous(breaks = yTickMarks, labels = substr(levels(alignments$queryID), start = 1, stop = 20),expand = c(0,0)) +
     { if(opt$h_lines){ geom_hline(yintercept = yTickMarks,
                                   color = "grey60",
                                   size = .1) }} +
-    scale_color_distiller(palette = "Spectral") +
-    labs(color = "Mean Percent Identity (per query)", 
-         title = paste0(   paste0("Post-filtering number of alignments: ", nrow(alignments),"\t\t\t\t"),
-                           paste0("minimum alignment length (-m): ", opt$min_align,"\n"),
-                           paste0("Post-filtering number of queries: ", length(unique(alignments$queryID)),"\t\t\t\t\t\t\t\t"),
-                           paste0("minimum query aggregate alignment length (-q): ", opt$min_query_aln)
-         )) +
-    xlab("Target") +
-    ylab("Query")
+    scale_color_distiller(palette = "Set1") +
+    labs(color = "Mean Percent Identity" 
+        #  title = paste0(   paste0("Post-filtering number of alignments: ", nrow(alignments),"\t\t\t\t"),
+        #                    paste0("minimum alignment length (-m): ", opt$min_align,"\n"),
+        #                    paste0("Post-filtering number of queries: ", length(unique(alignments$queryID)),"\t\t\t\t\t\t\t\t"),
+        #                    paste0("minimum query aggregate alignment length (-q): ", opt$min_query_aln)
+        #  )
+         ) +
+    xlab("DMv6") +
+    ylab("OKA15 hap2")
 } else {
   gp = ggplot(alignments) +
     geom_point(mapping = aes(x = refStart2, y = queryStart2),
@@ -262,8 +263,8 @@ if (opt$similarity) {
       panel.grid.major.y = element_blank(),
       panel.grid.minor.y = element_blank(),
       panel.grid.minor.x = element_blank(),
-      axis.text.y = element_text(size = 2),
-      axis.text.x = element_text(size = 2, angle = 90)
+      axis.text.y = element_text(size = 7),
+      axis.text.x = element_text(size = 7, angle = 90)
     ) +
     scale_y_continuous(breaks = yTickMarks, labels = substr(levels(alignments$queryID), start = 1, stop = 20),expand = c(0,0)) +
     { if(opt$h_lines){ geom_hline(yintercept = yTickMarks,

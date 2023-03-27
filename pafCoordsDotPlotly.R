@@ -234,10 +234,12 @@ if (opt$similarity) {
       panel.grid.major.y = element_blank(),
       panel.grid.minor.y = element_blank(),
       panel.grid.minor.x = element_blank(),
-      axis.text.y = element_text(size = 2),
-      axis.text.x = element_text(size = 2, angle = 90)
+      axis.text.y = element_text(size = 0.5),
+      axis.text.x = element_text(size = 2, angle = 90),
+      axis.ticks = element_line(size=0.1)
     ) +
-    scale_y_continuous(breaks = yTickMarks, labels = substr(levels(alignments$queryID), start = 1, stop = 20),expand = c(0,0)) +
+    scale_y_continuous(breaks = yTickMarks, labels = substr(levels(alignments$queryID), start = 1, stop = 20),
+      expand = c(0,0),guide=guide_axis(n.dodge=3)) +
     { if(opt$h_lines){ geom_hline(yintercept = yTickMarks,
                                   color = "grey60",
                                   size = .1) }} +
@@ -279,10 +281,12 @@ if (opt$similarity) {
     theme(
       panel.grid.major.y = element_blank(),
       panel.grid.minor.y = element_blank(),
-      axis.text.y = element_text(size = 2),
-      axis.text.x = element_text(size = 2, angle = 90)
+      axis.text.y = element_text(size = 0.5),
+      axis.text.x = element_text(size = 2, angle = 90),
+      axis.ticks = element_line(size=0.1)
     ) +
-    scale_y_continuous(breaks = yTickMarks, labels = substr(levels(alignments$queryID), start = 1, stop = 20),expand = c(0,0)) +
+    scale_y_continuous(breaks = yTickMarks, labels = substr(levels(alignments$queryID), start = 1, stop = 20),
+      expand = c(0,0),guide=guide_axis(n.dodge=3)) +
     { if(opt$h_lines){ geom_hline(yintercept = yTickMarks,
                                   color = "grey60",
                                   size = .1) }} +
