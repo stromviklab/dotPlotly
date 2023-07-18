@@ -23,7 +23,7 @@ option_list <- list(
   make_option(c("-p","--plot-size"), type="numeric", default=15,
               help="plot size X by X inches [default %default]",
               dest="plot_size"),
-  make_option(c("-l", "--show-horizontal-lines"), action="store_true", default=TRUE,
+  make_option(c("-l", "--show-horizontal-lines"), action="store_true", default=FALSE,
               help="turn on horizontal lines on plot for separating scaffolds  [default %default]",
               dest="h_lines"),
   make_option(c("-k", "--number-ref-chromosomes"), type="numeric", default=NULL,
